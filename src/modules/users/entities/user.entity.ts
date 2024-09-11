@@ -15,6 +15,14 @@ export class User {
   @Column({ nullable: false, select: false })
   password: string;
 
+   // Nuevo campo para almacenar la fecha de expiración del código (opcional)
+   @Column({ nullable: true })
+   resetCodeExpiry: Date | null;
+
+  // Nuevo campo para almacenar el código de recuperación temporalmente
+  @Column({ nullable: true })
+  resetCode: string | null;
+
   @ManyToMany(() => Roles, { eager: true })
   @JoinTable({
     name: 'users_roles', // nombre de la tabla intermedia

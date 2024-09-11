@@ -60,6 +60,16 @@ export class UsersService {
   
   }
 
+  async findOneByResetCode(resetCode: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { resetCode },
+    });
+  }
+
+
+  async save(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
 
  // TODO: metodo para saber los permisos de un usuario
   // async getUserPermissions(email: string): Promise<string[]> {

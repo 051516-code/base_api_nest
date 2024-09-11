@@ -12,6 +12,7 @@ import { AllExceptionsFilter } from './common/filters/all-exeptions.filter';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RoleModule } from './modules/roles/roles.module';
+import { MailerConfigModule } from './shared/utils/mailer.module';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { RoleModule } from './modules/roles/roles.module';
     AuthModule,
     UsersModule,
     RoleModule,
+    MailerConfigModule
   ],
   controllers: [AppController],
   providers: [
