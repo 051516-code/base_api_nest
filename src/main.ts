@@ -13,7 +13,7 @@ async function bootstrap() {
 
   // Configuración de Swagger
   const config = new DocumentBuilder()
-    .setTitle('baze-api')
+    .setTitle('base-api')
     .setDescription('API base')
     .setVersion('1.0')
     .addTag('api')
@@ -36,7 +36,7 @@ async function bootstrap() {
   // ruta global prefijo
   app.setGlobalPrefix('api/v1');
 
-  // validacion de formularios
+ // validacion de formularios
   // app.useGlobalPipes(
   //   new ValidationPipe({
   //     whitelist: true,
@@ -45,7 +45,7 @@ async function bootstrap() {
   //   })
   // )
 
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 4000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }

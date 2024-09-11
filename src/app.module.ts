@@ -12,6 +12,11 @@ import { AllExceptionsFilter } from './common/filters/all-exeptions.filter';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RoleModule } from './modules/roles/roles.module';
+
+
+import { MailerModule } from '@nestjs-modules/mailer';
+import { join } from 'path';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailerConfigModule } from './shared/utils/mailer.module';
 
 
@@ -35,10 +40,12 @@ import { MailerConfigModule } from './shared/utils/mailer.module';
       inject: [ConfigService],
 
     }),
+  
+    MailerConfigModule,
     AuthModule,
     UsersModule,
     RoleModule,
-    MailerConfigModule
+ 
   ],
   controllers: [AppController],
   providers: [
@@ -56,7 +63,7 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     await this.checkDatabaseConnection();
-    
+    console.log( 'camino template' + __dirname, './templates')
   }
 
   private async checkDatabaseConnection() {
@@ -70,7 +77,7 @@ export class AppModule implements OnModuleInit {
     } catch (error) {
       console.error(`Failed to Connect to MySQL database: ${error.message}`);
       
-    }
+    } 
   }
 
   

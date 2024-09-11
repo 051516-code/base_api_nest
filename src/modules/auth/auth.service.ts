@@ -83,14 +83,14 @@ export class AuthService {
   async sendResetCode(sendResetCodeDto: SendResetCodeDto): Promise<{ success: boolean }> {
     const { email } = sendResetCodeDto;
 
-    // Buscar el usuario por correo
+    // todo: Buscar el usuario por correo
     const user = await this.userService.findOneByEmail(email);
 
     if (!user) {
       throw new NotFoundException('El usuario no existe');
     }
 
-    // Generar el código de recuperación
+    // todo: Generar el código de recuperación
     const resetCode = Math.floor(1000 + Math.random() * 9000).toString(); // Código de 4 dígitos
     user.resetCode = resetCode; // Asignar el código al usuario
     await this.userService.save(user); // Guardar el usuario con el código
@@ -100,36 +100,72 @@ export class AuthService {
       await this.mailService.sendMail({
         to: email,
         subject: 'Código de recuperación de contraseña',
-        template: '/reset-password-code', // Nombre del archivo de la plantilla sin extensión
+        template: 'reset-password-code', // Nombre del archivo de la plantilla sin extensión
         context: {
           code: resetCode, // Pasar el código al contexto de la plantilla
         },
       });
 
       return { success: true }; // Retornar éxito
+
     } catch (error) {
       console.error('Error sending reset code:', error); // Mostrar error en consola
       throw new BadRequestException('Failed to send reset code.'); // Manejar el error
     }
   }
 
-
-async resetPassword(resetCode: string, resetPasswordDto: ResetPasswordDto): Promise<{ success: boolean }> {
+  async veryfyCode( resetCode: string): Promise<{success: boolean}>{
+    
+    //TODO: Buscar el usuario por el codigo ce recuperacion
     const user = await this.userService.findOneByResetCode(resetCode);
+
+    if(!user){
+      throw new  NotFoundException('Codigo de recuperacion  invalido o expirado');
+
+    }
+
+    //TODO:  verifica si el codigo a espirado
+  
+      // const expirationTime = 15 * 60 * 1000; // 15 minutos en milisegundos
+      // const currentTime = new Date().getTime();
+      // const codeCreationTime = user.resetCodeCreatedAt.getTime(); // Supone que tienes una propiedad `resetCodeCreatedAt`
+  
+      // if (currentTime - codeCreationTime > expirationTime) {
+      //   throw new BadRequestException('Código de recuperación expirado.');
+      // }
+    
+
+    //    //TODO:  Verificar si el código ya ha sido utilizado
+    // if (user.resetCodeUsed) { // Supone que tienes una propiedad `resetCodeUsed`
+    //   throw new BadRequestException('El código de recuperación ya ha sido utilizado.');
+    // }
+
+    return { success: true };
+
+  }
+
+
+async resetPassword( resetPasswordDto: ResetPasswordDto): Promise<{ success: boolean }> {
+   
+  const { resetCode , newPassword} = resetPasswordDto;
+  //TODO: verifica el codigo de recuperacion
+  const user = await this.userService.findOneByResetCode(resetCode);
 
     if (!user) {
       throw new NotFoundException('Código de recuperación inválido o expirado.');
     }
 
-    // Hashear la nueva contraseña
+    //todo: Hashear la nueva contraseña
     const hashedPassword = await bcryptjs.hash(resetPasswordDto.newPassword, 10);
 
-    // Actualizar la contraseña del usuario
+    //todo: Actualizar la contraseña del usuario
     user.password = hashedPassword;
     user.resetCode = null; // Limpiar el código de recuperación
     await this.userService.save(user);
 
     return { success: true };
   }
+
+
 }
 

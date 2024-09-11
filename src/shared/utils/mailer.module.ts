@@ -19,7 +19,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
         from: process.env.MAIL_FROM,
       },
       template: {
-        dir: join(__dirname, 'shared/utils/template'), // Ajusta la ruta relativa al directorio template
+        dir: join(__dirname, './template'), // Ajusta la ruta relativa al directorio template
         adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
@@ -29,4 +29,9 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
   ],
   exports: [MailerModule],
 })
-export class MailerConfigModule {}
+export class MailerConfigModule {
+  constructor() {
+    // Imprimir la ruta de las plantillas en la consola
+    console.log('Ruta de las plantillas:', join(__dirname, './template'));
+  }
+}
