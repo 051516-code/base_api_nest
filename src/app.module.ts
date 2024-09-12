@@ -17,7 +17,6 @@ import { RoleModule } from './modules/roles/roles.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { MailerConfigModule } from './shared/utils/mailer.module';
 
 
 @Module({
@@ -40,8 +39,29 @@ import { MailerConfigModule } from './shared/utils/mailer.module';
       inject: [ConfigService],
 
     }),
-  
-    MailerConfigModule,
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.MAIL_HOST,
+        port: parseInt(process.env.MAIL_PORT, 10),
+        secure: process.env.MAIL_SECURE === 'true', // Usa true si es necesario
+        auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS,
+        },
+      },
+      defaults: {
+        from: process.env.MAIL_FROM,
+      },
+      template: {
+        dir: join(__dirname, './templates'), // Ajusta la ruta relativa al directorio template
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+        },
+      },
+    }),
+
+
     AuthModule,
     UsersModule,
     RoleModule,
@@ -63,7 +83,6 @@ export class AppModule implements OnModuleInit {
 
   async onModuleInit() {
     await this.checkDatabaseConnection();
-    console.log( 'camino template' + __dirname, './templates')
   }
 
   private async checkDatabaseConnection() {

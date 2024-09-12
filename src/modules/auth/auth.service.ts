@@ -28,6 +28,7 @@ export class AuthService {
 
     //TODO: validamos que no exista un usuario con este email en la base de datos
     const userFound = await this.userService.findOneByEmail(email);
+
     if (userFound) {
       throw new BadRequestException('El usuario ya existe en la base de datos');
     }
@@ -50,6 +51,8 @@ export class AuthService {
     };
   }
 
+
+
   async login({ email, password }: LoginDto): Promise<{ token: string; email: string }> {
 
     // TODO: validamos la existencia del usuario
@@ -57,7 +60,6 @@ export class AuthService {
     
     if(!userFound){
       throw new Error("El usuario no existe en la base de datos.");
-
     }
     // TODO: validamos la contrasena del usuario
     const isPasswordValid = await bcryptjs.compare(password, userFound.password)
@@ -79,6 +81,8 @@ export class AuthService {
       email: userFound.email,
     }
   }
+
+
 
   async sendResetCode(sendResetCodeDto: SendResetCodeDto): Promise<{ success: boolean }> {
     const { email } = sendResetCodeDto;
@@ -121,11 +125,9 @@ export class AuthService {
 
     if(!user){
       throw new  NotFoundException('Codigo de recuperacion  invalido o expirado');
-
     }
 
     //TODO:  verifica si el codigo a espirado
-  
       // const expirationTime = 15 * 60 * 1000; // 15 minutos en milisegundos
       // const currentTime = new Date().getTime();
       // const codeCreationTime = user.resetCodeCreatedAt.getTime(); // Supone que tienes una propiedad `resetCodeCreatedAt`
@@ -148,6 +150,7 @@ export class AuthService {
 async resetPassword( resetPasswordDto: ResetPasswordDto): Promise<{ success: boolean }> {
    
   const { resetCode , newPassword} = resetPasswordDto;
+  
   //TODO: verifica el codigo de recuperacion
   const user = await this.userService.findOneByResetCode(resetCode);
 
