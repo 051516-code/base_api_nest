@@ -63,6 +63,7 @@ export class AuthService {
     }
     // TODO: validamos la contrasena del usuario
     const isPasswordValid = await bcryptjs.compare(password, userFound.password)
+
     if(!isPasswordValid){
       throw new Error("La contrasena es incorrecta");
     }
@@ -118,7 +119,10 @@ export class AuthService {
     }
   }
 
-  async veryfyCode( resetCode: string): Promise<{success: boolean}>{
+
+
+
+  async verifyCode( resetCode: string): Promise<{success: boolean}>{
     
     //TODO: Buscar el usuario por el codigo ce recuperacion
     const user = await this.userService.findOneByResetCode(resetCode);
@@ -150,7 +154,7 @@ export class AuthService {
 async resetPassword( resetPasswordDto: ResetPasswordDto): Promise<{ success: boolean }> {
    
   const { resetCode , newPassword} = resetPasswordDto;
-  
+
   //TODO: verifica el codigo de recuperacion
   const user = await this.userService.findOneByResetCode(resetCode);
 

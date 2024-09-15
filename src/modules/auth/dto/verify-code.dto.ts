@@ -1,9 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class ResetPasswordDto {
+export class VerifyCodeDto {
   @IsString()
   readonly resetCode: string;
-
-  @IsString()
-  readonly newPassword: string;
 }
