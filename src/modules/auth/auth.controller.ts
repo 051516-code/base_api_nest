@@ -22,10 +22,10 @@ export class AuthController {
 
       console.log('Solicitud login:', loginDto)
 
-     // Buscar el usuario por email y validar la contraseña
+     // TODO: Buscar el usuario por email y validar la contraseña
       const userLog = await this.authService.login(loginDto);
 
-     // Si el login es exitoso, devolver el token y el email
+     // todo> Si el login es exitoso, devolver el token y el email
         if (userLog) {
           return {
             success: true,
@@ -34,7 +34,7 @@ export class AuthController {
             message: 'Usuario logueado con éxito'
           };
         } else {
-          // Si el login falla, devolver un mensaje de error
+          // todo> Si el login falla, devolver un mensaje de error
           return { 
             success: false, 
             message: 'Usuario no logueado, credenciales incorrectas' 
@@ -137,9 +137,6 @@ export class AuthController {
         
       }
     }
-
-
-
 
     
     @Patch('reset-password')

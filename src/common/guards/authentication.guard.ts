@@ -50,7 +50,7 @@ export class AuthenticationGuard implements CanActivate {
         email: user.email,
         roles: user.roles.map(role => role.name) // Asegúrate de que `role.name` sea un string
       };
-      console.log(request.user)
+      // console.log(request.user)
       return true;
 
     } catch (error) {

@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, DeleteDateColumn, OneToMany } from 'typeorm';
 import { Roles } from '../../roles/entities/role.entity';
-
+import { Company } from '../../../modules/company/entities/company.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -36,6 +36,10 @@ export class User {
     },
   })
   roles: Roles[];
+
+    // Relación OneToMany con la entidad Company
+    @OneToMany(() => Company, (company) => company.owner)
+    companies: Company[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

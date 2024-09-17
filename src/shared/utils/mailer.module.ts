@@ -30,6 +30,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
   exports: [MailerModule],
 })
 export class MailerConfigModule {
+  
   constructor() {
     // Imprimir la ruta de las plantillas en la consola
     console.log('Ruta de las plantillas:', join(__dirname, './template'));
