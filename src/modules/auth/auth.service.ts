@@ -51,8 +51,6 @@ export class AuthService {
     };
   }
 
-
-
   async login({ email, password }: LoginDto): Promise<{ token: string; email: string }> {
 
     // TODO: validamos la existencia del usuario
@@ -82,8 +80,6 @@ export class AuthService {
       email: userFound.email,
     }
   }
-
-
 
   async sendResetCode(sendResetCodeDto: SendResetCodeDto): Promise<{ success: boolean }> {
     const { email } = sendResetCodeDto;
@@ -118,9 +114,6 @@ export class AuthService {
       throw new BadRequestException('Failed to send reset code.'); // Manejar el error
     }
   }
-
-
-
 
   async verifyCode( resetCode: string): Promise<{success: boolean}>{
     
